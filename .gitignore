@@ -1,0 +1,4 @@
+*.gif
+.*.sw*
+.cabal*
+cabal.sandbox.config
