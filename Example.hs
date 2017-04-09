@@ -25,10 +25,15 @@ flock =
     ]
 
 bt :: BoidTransform
-bt =  blend 0.7 (blend 0.9 remain (constant (-1)))
-   $  align     `within` 3
-  <+> cohesion  `upto` 1
-  <+> avoidance `within` 2 `upto` 2
+bt =  blend 0.7 remain $
+   (   align    `within` 3
+   <+> cohesion  `upto` 10
+   <+> avoidance `within` 2 `upto` 20
+   <+> avoid origin 
+   <+> avoid (V (-1, -1)) 
+   <+> avoid (V (1, 1)) 
+   <+> avoid (V (3, 0))
+   ) `upto` 3
 
 main :: IO ()
-main = makeGif 500 100 flock bt
+main = makeGif 200 100 flock bt

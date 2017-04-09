@@ -28,6 +28,9 @@ angle :: Vec -> Double
 angle (V (x, y)) = let ang = atan (y / x)
                    in if x < 0 then ang + pi else ang
 
+origin :: Vec
+origin = V (0, 0)
+
 data Boid = Boid { velocity :: Vec
                  , position :: Vec
                  } deriving (Show, Eq, Ord)
@@ -79,7 +82,7 @@ constant v _ _ = v
 
 avoidance :: BoidTransform
 avoidance b bs = sum [ let v = position b - position b' in
-                        scale (recip ((mag v) + 1)) (norm v)
+                        scale (recip ((mag v) + 0.01)) (norm v)
                      | b' <- bs ]
 
 within :: BoidTransform -> Double -> BoidTransform
@@ -100,3 +103,6 @@ infixl 4 `upto`
 
 blend :: Double -> BoidTransform -> BoidTransform -> BoidTransform
 blend sf f g b bts = scale sf (f b bts) + scale (1 - sf) (g b bts)
+
+avoid :: Vec -> BoidTransform
+avoid p b _ = scale (recip $ 0.01 + mag (position b - p)) (position b - p)
