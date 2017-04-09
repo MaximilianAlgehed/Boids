@@ -31,7 +31,7 @@ Combining two transformations can be done using `<+>`
 Using `upto` the degree to which a certain transformation contributes
 to the behaviour of the boids can be controlled
 
-`align <+> cohesion <+> avoidance `upto` 0.5`
+`align <+> cohesion <+> avoidance 'upto' 0.5`
 
 ![](gifs/alignCohesionAvoidance.gif)
 
