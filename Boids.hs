@@ -13,14 +13,14 @@ instance Num Vec where
   negate (V (a, b)) = V (negate a, negate b)
   fromInteger a = V (fromInteger a, fromInteger a)
 
-magnitude :: Vec -> Double
-magnitude (V (a, b)) = sqrt (a**2 + b**2)
+mag :: Vec -> Double
+mag (V (a, b)) = sqrt (a**2 + b**2)
 
 scale :: Double -> Vec -> Vec
 scale s (V (a, b)) = V (s * a, s * b)
 
 norm :: Vec -> Vec
-norm v = scale (recip (magnitude v)) v
+norm v = scale (recip (mag v)) v
 
 angle :: Vec -> Double
 angle (V (x, y)) = let ang = atan (y / x)
@@ -50,6 +50,9 @@ type Flock = [Boid]
 -- and produces a velocity
 type BoidTransform = Boid -> [Boid] -> Vec 
 
+(<+>) :: BoidTransform -> BoidTransform -> BoidTransform
+(f <+> g) b bs = (f b bs) + (g b bs)
+
 applyBT :: BoidTransform -> [Boid] -> [Boid]
 applyBT bt bds = let bds' = zip [0..] bds in [ b { velocity = bt b (snd <$> (bds' \\ [(idx, b)]) )} | (idx, b) <- bds' ]
 
@@ -68,10 +71,26 @@ align = averageBy velocity
 constant :: Vec -> BoidTransform
 constant v _ _ = v
 
+avoidance :: BoidTransform
+avoidance b bs = sum [ let v = position b - position b' in
+                        scale (recip (mag v)) (norm v)
+                     | b' <- bs ]
+
 within :: BoidTransform -> Double -> BoidTransform
 within transform r b bds =
   transform b
-  (filter (\b' -> magnitude (position b' - position b) <= r**2) bds)
+  (filter (\b' -> mag (position b' - position b) <= r) bds)
+
+infixl `within`
+
+upto :: BoidTransform -> Double -> BoidTransform
+upto bt lim b bds = let v = bt b bds in
+                      if mag v > lim then
+                        scale lim (norm v)
+                      else
+                        v
+
+infixl `upto`
 
 blend :: Double -> BoidTransform -> BoidTransform -> BoidTransform
 blend sf f g b bts = scale sf (f b bts) + scale (1 - sf) (g b bts)

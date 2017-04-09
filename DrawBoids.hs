@@ -5,7 +5,7 @@
 module DrawBoids where
 
 import Diagrams.Prelude hiding (position)
-import Diagrams.Backend.Cairo.CmdLine
+import Diagrams.Backend.Rasterific
 import Diagrams.Backend.CmdLine hiding (interval)
 import Diagrams.Size
 import Diagrams.Core.Transform
@@ -38,7 +38,7 @@ animate bt dt flock = steps bt dt <$> (floor <$> interval 0 100) <*> pure flock
 bound :: Double -> Flock -> Double
 bound sz = foldl max 0 . map (\b -> let (x, y) = unVec (position b) in sz ** 2 + max (abs x) (abs y))
 
-gif :: Flock -> BoidTransform -> [(QDiagram Cairo V2 Double Any, Int)]
+gif :: Flock -> BoidTransform -> [QDiagram B V2 Double Any]
 gif flock bt =
   let sz     = 1 
       flocks = [ runActive (animate bt 0.1 flock) (toTime t) | t <- [0, 1 .. 100] ]
@@ -48,7 +48,7 @@ gif flock bt =
                 <> drawFlock sz f
                 ) # bg white
                ) <$> flocks
-  in  [ (d, 5) | (d, t) <- zip diags [0, 1 .. 100] ]
+  in diags
 
 makeGif :: Flock -> BoidTransform -> IO ()
-makeGif flock bt = gifRender (DiagramOpts (Just 500) (Just 500) "output.gif", GifOpts False False Nothing) (gif flock bt)
+makeGif flock bt = animatedGif "output.gif" (dims (r2 (500, 500))) LoopingForever 5 (gif flock bt)

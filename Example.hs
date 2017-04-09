@@ -16,7 +16,7 @@ flock = [ boid (1, 1) (0.3, 0.3)
         ]
 
 bt :: BoidTransform
-bt = blend 0.33 (blend 0.5 align cohesion) remain
+bt = blend 0.3 remain (align <+> cohesion <+> (avoidance `within` 2 `upto` 0.5))
 
 main :: IO ()
 main = makeGif flock bt
