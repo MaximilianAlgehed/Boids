@@ -18,5 +18,9 @@ to come together to the same position
 
 ![](gifs/cohesionAllStandStill.gif)
 
+Boids can also be made to avoid each other using `avoidance`
+
+![](gifst/avoidanceAllFromCentre.gif)
+
 # References
 \[1\] [Flocks, Herds, and Schools: A Distributed Behavioral Model](http://www.red3d.com/cwr/papers/1987/boids.html)
