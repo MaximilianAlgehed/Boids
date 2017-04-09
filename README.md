@@ -22,5 +22,10 @@ Boids can also be made to avoid each other using `avoidance`
 
 ![](gifs/avoidanceAllFromCentre.gif)
 
+Combining two transformations can be done using `<+>`,
+as has been done in the following example of `align <+> cohesion`.
+
+![](gifs/addAlignCohesion.gif)
+
 # References
 \[1\] [Flocks, Herds, and Schools: A Distributed Behavioral Model](http://www.red3d.com/cwr/papers/1987/boids.html)
