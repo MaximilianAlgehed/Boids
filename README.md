@@ -24,14 +24,18 @@ Boids can also be made to avoid each other using `avoidance`
 
 Combining two transformations can be done using `<+>`
 
-`align <+> cohesion`.
+```Haskell
+align <+> cohesion
+```
 
 ![](gifs/addAlignCohesion.gif)
 
 Using `upto` the degree to which a certain transformation contributes
 to the behaviour of the boids can be controlled
 
-`align <+> cohesion <+> avoidance 'upto' 0.5`
+```Haskell
+align <+> cohesion <+> avoidance `upto` 0.5
+```
 
 ![](gifs/alignCohesionAvoidance.gif)
 
