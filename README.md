@@ -27,5 +27,12 @@ as has been done in the following example of `align <+> cohesion`.
 
 ![](gifs/addAlignCohesion.gif)
 
-# References
+## Future work
+Currently, the library only supports modelling "flocking" like behaviour. 
+But [2] indicates that a future direction for the project could include
+optimization problems and modelling decision procedures in groups of stakeholders.
+
+## References
 \[1\] [Flocks, Herds, and Schools: A Distributed Behavioral Model](http://www.red3d.com/cwr/papers/1987/boids.html)
+
+\[2\] [A review of particle swarm optimization. Part I: background and development](http://sci2s.ugr.es/sites/default/files/files/Teaching/GraduatesCourses/Metaheuristicas/Bibliography/A05%20-%20A-review-of-particle-swarm-optimization-PartI.pdf)
