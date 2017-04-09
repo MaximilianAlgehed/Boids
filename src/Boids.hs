@@ -1,6 +1,5 @@
 module Boids where
 import Data.List
-import Control.DeepSeq
 
 type DeltaTime = Double
 
