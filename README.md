@@ -22,10 +22,18 @@ Boids can also be made to avoid each other using `avoidance`
 
 ![](gifs/avoidanceAllFromCentre.gif)
 
-Combining two transformations can be done using `<+>`,
-as has been done in the following example of `align <+> cohesion`.
+Combining two transformations can be done using `<+>`
+
+`align <+> cohesion`.
 
 ![](gifs/addAlignCohesion.gif)
+
+Using `upto` the degree to which a certain transformation contributes
+to the behaviour of the boids can be controlled
+
+`align <+> cohesion <+> avoidance `upto` 0.5`
+
+![](gifs/alignCohesionAvoidance.gif)
 
 ## Future work
 Currently, the library only supports modelling "flocking" like behaviour. 

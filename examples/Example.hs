@@ -43,4 +43,4 @@ bt' :: BoidTransform
 bt' = align <+> cohesion
 
 main :: IO ()
-main = makeGif 500 50 fourFlock (align <+> cohesion)
+main = makeGif 500 50 fourFlock (align <+> cohesion <+> (avoidance `upto` 0.3))
