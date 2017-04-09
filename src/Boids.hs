@@ -24,6 +24,7 @@ norm (V (0, 0)) = V (0, 0)
 norm v = scale (recip (mag v)) v
 
 angle :: Vec -> Double
+angle (V (0, 0)) = 0
 angle (V (x, y)) = let ang = atan (y / x)
                    in if x < 0 then ang + pi else ang
 
@@ -68,7 +69,9 @@ remain :: BoidTransform
 remain b _ = velocity b
 
 averageBy :: (Boid -> Vec) -> BoidTransform
-averageBy f b bds = scale (recip (genericLength bds + 1)) (sum [f boid | boid <- (b:bds)])
+averageBy f b bds =
+  scale (recip (genericLength bds + 1))
+        (sum [f boid | boid <- (b:bds)])
 
 cohesion :: BoidTransform
 cohesion b bds = averageBy position b bds - position b

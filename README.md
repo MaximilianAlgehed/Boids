@@ -11,6 +11,9 @@ rendering flocks of boids as GIF files.
 We start with the most basic transformation of all, `remain`.
 This transformation makes boids keep their current velocity
 ![](gifs/remainAllSameDirection.gif)
+Then there is `cohesion`, which makes boids want to come together
+to the same position
+![](gifs/cohesionAllStandStill.gif)
 
 # References
 \[1\] [Flocks, Herds, and Schools: A Distributed Behavioral Model](http://www.red3d.com/cwr/papers/1987/boids.html)

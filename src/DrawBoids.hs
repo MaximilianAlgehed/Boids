@@ -47,7 +47,12 @@ gif maxT flock bt =
                 <> drawFlock sz f
                 ) # bg white
                ) <$> theFlocks
-  in diags
+  in diags 
 
 makeGif :: Double -> Rational -> Flock -> BoidTransform -> IO ()
-makeGif sz maxT flock bt = animatedGif "output.gif" (dims (r2 (sz, sz))) LoopingForever 5 (gif maxT flock bt)
+makeGif sz maxT flock bt =
+  animatedGif "output.gif"
+              (dims (r2 (sz, sz)))
+              LoopingForever
+              5
+              (gif maxT flock bt)
