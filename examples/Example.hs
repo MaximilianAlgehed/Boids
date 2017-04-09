@@ -35,5 +35,16 @@ bt =  blend 0.7 remain $
    <+> avoid (V (3, 0))
    ) `upto` 3
 
+fourFlock :: Flock
+fourFlock =
+  [ boid (-1, -1) (0, 1)
+  , boid (1, 1)   (0, 1)
+  , boid (-1, 1)  (0, 1)
+  , boid (1, -1)  (0, 1)
+  ]
+
+bt' :: BoidTransform
+bt' = align <+> cohesion
+
 main :: IO ()
-main = makeGif 200 100 flock bt
+main = makeGif 500 50 fourFlock remain

@@ -3,3 +3,4 @@
 .cabal*
 cabal.sandbox.config
 dist/
+!gifs/*.gif
