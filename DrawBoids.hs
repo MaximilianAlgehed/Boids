@@ -27,28 +27,27 @@ drawFlock :: Double -> Flock -> Diagram B
 drawFlock scale boids = foldl (<>) mempty [ drawBoid scale boid | boid <- boids ]
 
 step :: BoidTransform -> Double -> [Boid] -> [Boid]
-step bt dt = applyBT bt . update dt
-
-steps :: BoidTransform -> Double -> Int -> [Boid] -> [Boid]
-steps bt dt n = foldl (.) id (replicate n (step bt dt)) 
-
-animate :: BoidTransform -> Double -> Flock -> Active Flock
-animate bt dt flock = steps bt dt <$> (floor <$> interval 0 100) <*> pure flock
+step bt dt = update dt . applyBT bt
 
 bound :: Double -> Flock -> Double
-bound sz = foldl max 0 . map (\b -> let (x, y) = unVec (position b) in sz ** 2 + max (abs x) (abs y))
+bound sz = maximum . map (\b -> let (x, y) = unVec (position b) in sz ** 2 + max (abs x) (abs y))
 
-gif :: Flock -> BoidTransform -> [QDiagram B V2 Double Any]
-gif flock bt =
-  let sz     = 1 
-      flocks = [ runActive (animate bt 0.1 flock) (toTime t) | t <- [0, 1 .. 100] ]
-      maxB   = maximum (bound sz <$> flocks)
+gif :: Rational -> Flock -> BoidTransform -> [QDiagram B V2 Double Any]
+gif maxT flock bt =
+  let sz = 1 
+      flocks t f fs
+        | t <= 0    = f:fs
+        | otherwise = flocks (t - 1) (step bt 0.1 f) (f:fs)
+        
+      theFlocks = reverse (flocks maxT flock [])
+
+      maxB   = maximum (bound sz <$> theFlocks)
       diags  = (\f ->
-                (  square (2*(maxB + sz)) # opacity 0 # showOrigin
+                (  square (2*(maxB + sz)) # opacity 0
                 <> drawFlock sz f
                 ) # bg white
-               ) <$> flocks
+               ) <$> theFlocks
   in diags
 
-makeGif :: Flock -> BoidTransform -> IO ()
-makeGif flock bt = animatedGif "output.gif" (dims (r2 (500, 500))) LoopingForever 5 (gif flock bt)
+makeGif :: Double -> Rational -> Flock -> BoidTransform -> IO ()
+makeGif sz maxT flock bt = animatedGif "output.gif" (dims (r2 (sz, sz))) LoopingForever 5 (gif maxT flock bt)
