@@ -54,6 +54,11 @@ bt avd = blend 0.7 remain $
 
 ![](gifs/avoidPoints.gif)
 
+Many more interesting tricks exist, boids can even be made to follow
+vector fields using `along`
+
+![](gifs/spiralField.gif)
+
 ## Future work
 Currently, the library only supports modelling "flocking" like behaviour. 
 But [2] indicates that a future direction for the project could include

@@ -108,3 +108,6 @@ blend sf f g b bts = scale sf (f b bts) + scale (1 - sf) (g b bts)
 
 avoid :: Vec -> BoidTransform
 avoid p b _ = scale (recip $ 0.01 + mag (position b - p)) (position b - p)
+
+along :: ((Double, Double) -> (Double, Double)) -> BoidTransform
+along f b _ = V (f (unVec (position b)))

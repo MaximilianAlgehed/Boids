@@ -16,7 +16,10 @@ extra-source-files:  ChangeLog.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Example, DrawBoids, Boids
+  exposed-modules:     Example
+                     , DrawBoids
+                     , DrawBoidsUtility
+                     , Boids
   build-depends:       base >=4.9 && <4.10
                      , diagrams-lib >=1.4 && <1.5
                      , diagrams-rasterific >=1.4 && <1.5
