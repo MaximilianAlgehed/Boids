@@ -32,8 +32,8 @@ step bt dt = update dt . applyBT bt
 bound :: Double -> Flock -> Double
 bound sz = maximum . map (\b -> let (x, y) = unVec (position b) in sz ** 2 + max (abs x) (abs y))
 
-gif :: Rational -> Flock -> BoidTransform -> [QDiagram B V2 Double Any]
-gif maxT flock bt =
+gif :: Diagram B -> Rational -> Flock -> BoidTransform -> [QDiagram B V2 Double Any]
+gif backG maxT flock bt =
   let sz = 1 
       flocks t f fs
         | t <= 0    = f:fs
@@ -44,15 +44,19 @@ gif maxT flock bt =
       maxB   = maximum (bound sz <$> theFlocks)
       diags  = (\f ->
                 (  square (2*(maxB + sz)) # opacity 0
+                <> backG
                 <> drawFlock sz f
                 ) # bg white
                ) <$> theFlocks
   in diags 
 
 makeGif :: Double -> Rational -> Flock -> BoidTransform -> IO ()
-makeGif sz maxT flock bt =
+makeGif = makeGifWithBackground (circle 1 # opacity 0)
+
+makeGifWithBackground :: Diagram B -> Double -> Rational -> Flock -> BoidTransform -> IO ()
+makeGifWithBackground backG sz maxT flock bt =
   animatedGif "output.gif"
               (dims (r2 (sz, sz)))
               LoopingForever
               5
-              (gif maxT flock bt)
+              (gif backG maxT flock bt)

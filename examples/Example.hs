@@ -1,5 +1,7 @@
 module Example where
 
+import qualified Diagrams.Prelude as D
+import qualified Diagrams.Backend.Rasterific as B
 import Boids
 import DrawBoids
 
@@ -20,16 +22,14 @@ flock =
     , boid (2, -3)   (-3, -7)
     ]
 
-bt :: BoidTransform
-bt =  blend 0.7 remain $
-   (   align    `within` 3
-   <+> cohesion  `upto` 10
-   <+> avoidance `within` 2 `upto` 20
-   <+> avoid origin 
-   <+> avoid (V (-1, -1)) 
-   <+> avoid (V (1, 1)) 
-   <+> avoid (V (3, 0))
-   ) `upto` 3
+bt :: [(Double, Double)] -> BoidTransform
+bt avd = blend 0.7 remain $
+   (foldl (<+>)
+     (   align    `within` 3
+     <+> cohesion  `upto` 10
+     <+> avoidance `within` 2 `upto` 20
+     ) (map (avoid . V) avd)
+   )`upto` 3
 
 fourFlock :: Flock
 fourFlock =
@@ -42,5 +42,13 @@ fourFlock =
 bt' :: BoidTransform
 bt' = align <+> cohesion
 
+makeBackground :: [(Double, Double)] -> D.Diagram B.B
+makeBackground = foldl mappend mempty . map makeCircle
+  where
+    makeCircle :: (Double, Double) -> D.Diagram B.B
+    makeCircle p = D.circle 0.1 D.# D.translate (D.r2 p) D.# D.fc D.red D.# D.lw D.none
+
+points = [(3, 0), (0, 0), (2, 2), (-10, 0)]
+
 main :: IO ()
-main = makeGif 500 50 fourFlock (align <+> cohesion <+> (avoidance `upto` 0.3))
+main = makeGifWithBackground (makeBackground points) 500 50 fourFlock (bt points)

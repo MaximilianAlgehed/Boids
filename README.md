@@ -39,6 +39,10 @@ align <+> cohesion <+> avoidance `upto` 0.5
 
 ![](gifs/alignCohesionAvoidance.gif)
 
+Boids can also be made to avoid certain points using `avoid`
+
+![](gifs/avoidPoints.gif)
+
 ## Future work
 Currently, the library only supports modelling "flocking" like behaviour. 
 But [2] indicates that a future direction for the project could include
