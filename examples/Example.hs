@@ -48,7 +48,11 @@ makeBackground = foldl mappend mempty . map makeCircle
     makeCircle :: (Double, Double) -> D.Diagram B.B
     makeCircle p = D.circle 0.1 D.# D.translate (D.r2 p) D.# D.fc D.red D.# D.lw D.none
 
-points = [(3, 0), (0, 0), (2, 2), (-10, 0)]
+points = [ (3, 0)
+         , (0, 0)
+         , (2, 2)
+         , (-10, 0)
+         ]
 
 main :: IO ()
 main = makeGifWithBackground (makeBackground points) 500 50 fourFlock (bt points)
