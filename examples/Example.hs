@@ -24,12 +24,12 @@ flock =
 
 bt :: [(Double, Double)] -> BoidTransform
 bt avd = blend 0.7 remain $
-   (foldl (<+>)
+   foldl (<+>)
      (   align    `within` 3
      <+> cohesion  `upto` 10
      <+> avoidance `within` 2 `upto` 20
      ) (map (avoid . V) avd)
-   )`upto` 3
+   `upto` 3
 
 fourFlock :: Flock
 fourFlock =

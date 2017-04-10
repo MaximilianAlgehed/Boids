@@ -41,6 +41,17 @@ align <+> cohesion <+> avoidance `upto` 0.5
 
 Boids can also be made to avoid certain points using `avoid`
 
+```Haskell
+bt :: [(Double, Double)] -> BoidTransform
+bt avd = blend 0.7 remain $
+   foldl (<+>)
+     (   align     `within` 3
+     <+> cohesion              `upto` 10
+     <+> avoidance `within` 2  `upto` 20
+     ) (map (avoid . V) avd)
+   `upto` 3
+```
+
 ![](gifs/avoidPoints.gif)
 
 ## Future work
