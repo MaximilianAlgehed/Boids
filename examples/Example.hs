@@ -48,4 +48,7 @@ points = [ (3, 0)
          ]
 
 main :: IO ()
-main = makeGifWithBackground (field (grid 10 10 3) (\(x, y) -> (-y*0.5, x*0.5))) 500 200 [boid (3, 3) (0, 0)] (along (\(x, y) -> (-y, x)))
+main = makeGifWithBackground
+  (field (grid 15 15 3) (\(x, y) -> normalise (-y*0.5, x*0.5))) 500 200
+  [boid (3, 3) (0, 0), boid (2, 2) (0, 0)]
+  $ (align `upto` 1 <+> cohesion `upto` 1 <+> avoidance `upto` 2 <+> along (\(x, y) -> normalise (-y, x))) `scaledBy` 3

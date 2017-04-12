@@ -13,6 +13,12 @@ instance Num Vec where
   negate (V (a, b)) = V (negate a, negate b)
   fromInteger a = scale (fromInteger a) $ V (1, 0)
 
+normalise :: (Double, Double) -> (Double, Double)
+normalise (0, 0) = (0, 0)
+normalise (a, b) =
+  let m = sqrt (a**2 + b**2) in
+    (a / m, b / m)
+
 mag :: Vec -> Double
 mag (V (a, b)) = sqrt (a**2 + b**2)
 
@@ -111,3 +117,6 @@ avoid p b _ = scale (recip $ 0.01 + mag (position b - p)) (position b - p)
 
 along :: ((Double, Double) -> (Double, Double)) -> BoidTransform
 along f b _ = V (f (unVec (position b)))
+
+scaledBy :: BoidTransform -> Double -> BoidTransform
+scaledBy f s b bs = scale s (f b bs)
